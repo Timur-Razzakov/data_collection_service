@@ -16,7 +16,9 @@ def get_data(
         city: str,
         speciality: str):
     _options = Options()
-    # _options.add_argument('--headless')
+    _options.add_argument("--window-size=1920,1080")
+    _options.add_argument("--proxy-bypass-list=*")
+    _options.add_argument('--headless')
     driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=_options)
     st = time.time()
     driver.get('https://hh.uz')
