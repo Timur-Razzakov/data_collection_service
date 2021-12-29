@@ -1,16 +1,12 @@
 import json
 import sys
-from random import randint
-
 from pyppeteer.errors import PageError
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ES
-import time
-from selenium import webdriver
-
-PATH = "/home/timur/PycharmProjects/Django_projects/data_collection_service/service/scraping/all_parsers/chromedriver"
+from selenium.webdriver.support.wait import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 def main_scraping_part(
@@ -18,8 +14,11 @@ def main_scraping_part(
         city: str,
         speciality: str):
     _options = Options()
-    # _options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path=PATH, chrome_options=_options)
+    _options.add_argument("--window-size=1920,1080")
+    _options.add_argument("--proxy-bypass-list=*")
+    _options.add_argument('--headless')
+
+    driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=_options)
 
     errors = []
     all_href = set()
@@ -92,7 +91,6 @@ def main_scraping_part(
     # проходимся по всем ссылкам из списка и берём нужные данные
     for url_job in all_href:
         n += 1
-        print(n)
         # открываем новую вкладку
         driver.execute_script("window.open('about:blank', 'tab2');")
         driver.switch_to.window("tab2")

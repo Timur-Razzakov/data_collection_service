@@ -80,5 +80,5 @@ for vacancy in results:
     if errors:
         err = Error(data=errors).save()
 
-# # if __name__ == '__main__':
-# #     print(run())
+# if __name__ == '__main__':
+#     print(run())
