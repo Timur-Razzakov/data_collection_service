@@ -54,6 +54,7 @@ data_list = get_data(settings, )
 results, errors = [], []
 # Запуск скрейперов
 for data in data_list:
+    ic(data['city'])
     for func in scrapers:
         job, error = func(1, city=data['city'], speciality=data['speciality'])
         results += job
@@ -75,9 +76,9 @@ for vacancy in results:
     try:
         job.save()
     except Exception as e:
-        pass
+        print(e)
     if errors:
         err = Error(data=errors).save()
 
-# if __name__ == '__main__':
-#     print(run())
+# # if __name__ == '__main__':
+# #     print(run())
