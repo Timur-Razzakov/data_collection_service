@@ -20,15 +20,15 @@
                 получать каждый день письмо со списком новых вакансий за последние сутки, согласно
                 Вашим потребностям.
             </p>
-        </div>
 
-        <form method="GET" action="{% url 'vacant_list' %}">
-            <div class="form-group">
-                {{ form.as_p }}
-            </div>
-            <button type="submit" class="btn btn-primary">Найти</button>
-        </form>
+
+            <form method="GET" action="{% url 'vacant_list' %}">
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-primary">Найти</button>
+            </form>
+        </div>
     </div>
 </div>
-
 {% endblock %}

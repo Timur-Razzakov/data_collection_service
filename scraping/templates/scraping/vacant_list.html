@@ -32,7 +32,8 @@
             <ul class="pagination">
                 {% if object_list.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?city={{city}}&speciality={{ speciality }}&page=1" aria-label="Previous">
+                    <a class="page-link" href="?city={{city}}&speciality={{ speciality }}&page=1"
+                       aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -61,15 +62,19 @@
 <h3 class="my-4 text-center">К сожалению, по Вашему запросу, ничего не найдено.</h3>
 {% endif %}
 {{ page_obj }}
-<div class="row ">
-    <div class="col-md-6 mx-auto my-3">
-        <h4 class="my-4 text-center">Новый поиск</h4>
-        <form method="GET" action="{% url 'vacant_list' %}">
-            <div class="form-group">
-                {{ form.as_p }}
+<div class="col-md-8 mx-auto my-2">
+    <div class="container px-4">
+        <div class="row ">
+            <div class="col-md-6 mx-auto my-3">
+                <h4 class="my-4 text-center">Новый поиск</h4>
+                <form method="GET" action="{% url 'vacant_list' %}">
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-primary">Найти</button>
-        </form>
+        </div>
     </div>
 </div>
 
