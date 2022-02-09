@@ -1,12 +1,16 @@
+import json
+import random
 import sys
 import time
+
 from pyppeteer.errors import PageError
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as ES
 from selenium.webdriver.support.wait import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support import expected_conditions as ES
+from selenium.webdriver.chrome.options import Options
+
+PATH = "/home/timur/PycharmProjects/Django_projects/data_collection_service/service/scraping/all_parsers/chromedriver"
 
 
 def get_data(
@@ -14,10 +18,8 @@ def get_data(
         city: str,
         speciality: str):
     _options = Options()
-    _options.add_argument("--window-size=1920,1080")
-    _options.add_argument("--proxy-bypass-list=*")
-    _options.add_argument('--headless')
-    driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=_options)
+    # _options.add_argument('--headless')
+    driver = webdriver.Chrome(executable_path=PATH, chrome_options=_options)
     st = time.time()
     driver.get('https://hh.uz')
     results = []
@@ -32,7 +34,7 @@ def get_data(
         )
 
     """   
-        Поиск нужного поля
+    Поиск нужного поля
     """
     try:
         input_prof = driver.find_element('xpath',
@@ -51,9 +53,7 @@ def get_data(
     input_prof.send_keys('{0}  {1}'.format(speciality, city))
     submit_button.click()
 
-    """
-        Проверяем не пустая ли страница
-    """
+    """Проверяем не пустая ли страница """
     try:
         vacancies = Wait(10, By.CSS_SELECTOR, f'.bloko-column_m-9.bloko-column_l-13')
     except Exception:
@@ -72,6 +72,7 @@ def get_data(
                 'speciality': speciality,
             }
             errors.append(data)
+            print('ERRORRRRRRRRRRRRRRR')
             sys.exit()
         try:
             for vacancy in vacancies:
@@ -83,13 +84,8 @@ def get_data(
                 driver.execute_script("window.open('about:blank', 'tab2');")
                 driver.switch_to.window("tab2")
                 driver.get(url)
-
-                try:
-                    salary = driver.find_element(By.CSS_SELECTOR, 'div[data-qa^="vacancy-salary"]').text
-                    description = driver.find_element(By.CSS_SELECTOR,
-                                                      'div[data-qa="vacancy-description"]').text
-                except Exception:
-                    errors.append({f'description and salary is EMPTY'})
+                salary = driver.find_element(By.CSS_SELECTOR, 'div[class^="vacancy-salary"]').text
+                description = driver.find_element(By.CSS_SELECTOR, 'div[data-qa="vacancy-description"]').text
 
                 driver.switch_to.window(driver.window_handles[0])
 
@@ -113,11 +109,11 @@ def get_data(
         except TimeoutError:
             break
     #
-    # with open("results_hh.json", "w", encoding="utf=8") as file:
-    #     json.dump(results, file, indent=4, ensure_ascii=False)
+    with open("results_hh.json", "w", encoding="utf=8") as file:
+        json.dump(results, file, indent=4, ensure_ascii=False)
 
     return results, errors
 
-#
-# if __name__ == '__main__':
-#     get_data(1, 'Москва', 'Python')
+
+if __name__ == '__main__':
+    get_data(1, 'Москва', 'Python')

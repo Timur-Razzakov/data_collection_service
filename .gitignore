@@ -3,3 +3,5 @@
 *.env
 /__pycache__/
 *.pyc
+../configurations
+../templates_tag.txt

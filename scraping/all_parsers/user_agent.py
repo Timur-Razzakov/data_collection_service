@@ -16,7 +16,6 @@ def random_agent():
     ]
     return headers
 
-
 from user_agent import random_agent
 # user_agent
 header = str(random_agent())

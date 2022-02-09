@@ -38,11 +38,7 @@ def register_view(request):
     form = UserRegistrationForm(request.POST or None)
     if form.is_valid():
         new_user = form.save(commit=False)  # instans) commit=False-->исп для полного соединения с базой
-        data = form.cleaned_data
-        new_user.city = data['city']
-        new_user.speciality = data['speciality']
         new_user.set_password(form.cleaned_data['password'])  # ЗАШИФРОВЫВАЕТ пароль
-        new_user.send_email = data['send_email']
         new_user.save()
         messages.success(request, 'Пользователь добавлен в систему.')
         return render(request, 'accounts/registered.html',
@@ -103,7 +99,10 @@ def contact_view(request):
             qs = Error.objects.filter(created_at=dt.date.today())
             if qs.exists():
                 err = qs.first()
+                ic(err)
+                ic(type(err))
                 data = err.data.get('user_data', [])
+                ic(type(data))
                 data.append({'city': city, 'email': email, 'speciality': speciality})
                 err.data['user_data'] = data
                 err.save()
