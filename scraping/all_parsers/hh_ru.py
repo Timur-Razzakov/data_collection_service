@@ -72,7 +72,6 @@ def get_data(
                 'speciality': speciality,
             }
             errors.append(data)
-            print('ERRORRRRRRRRRRRRRRR')
             sys.exit()
         try:
             for vacancy in vacancies:
