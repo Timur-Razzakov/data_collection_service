@@ -1,6 +1,5 @@
-import json
+
 import sys
-from pyppeteer.errors import PageError
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -85,7 +84,6 @@ def main_scraping_part(
             'speciality': speciality,
         }
         errors.append(data)
-        print('ERRORRRRRRRRRRRRRRR')
         sys.exit()
 
     # проходимся по всем ссылкам из списка и берём нужные данные
@@ -101,7 +99,8 @@ def main_scraping_part(
         try:
             url = url_job
             title = driver.find_element('xpath', '//div[@class="col-md-12"]/h1').text
-            description = driver.find_element('xpath', '//div/div[@class="row p-y-3"]/div[@class="col-md-12"]').text
+            description = driver.find_element('xpath',
+                                              '//div/div[@class="row p-y-3"]/div[@class="col-md-12"]').text
             salary = driver.find_element('xpath', '//div/div[@class="row m-y-1"]/div[@class="col-md-4"]').text
             company_name = driver.find_element('xpath', '//div[@class="col-md-12"]/h4').text
         except TimeoutError:
@@ -148,7 +147,6 @@ def main_scraping_part(
     # with open("errors.json", "w", encoding="utf=8") as file:
     #     json.dump(errors, file, indent=4, ensure_ascii=False)
     return results, errors
-
 
 #
 # '''

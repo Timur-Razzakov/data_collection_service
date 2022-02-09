@@ -1,7 +1,5 @@
-import json
 import sys
 import time
-
 from pyppeteer.errors import PageError
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -34,7 +32,7 @@ def get_data(
         )
 
     """   
-    Поиск нужного поля
+        Поиск нужного поля
     """
     try:
         input_prof = driver.find_element('xpath',
@@ -53,7 +51,9 @@ def get_data(
     input_prof.send_keys('{0}  {1}'.format(speciality, city))
     submit_button.click()
 
-    """Проверяем не пустая ли страница """
+    """
+        Проверяем не пустая ли страница
+    """
     try:
         vacancies = Wait(10, By.CSS_SELECTOR, f'.bloko-column_m-9.bloko-column_l-13')
     except Exception:
@@ -83,8 +83,13 @@ def get_data(
                 driver.execute_script("window.open('about:blank', 'tab2');")
                 driver.switch_to.window("tab2")
                 driver.get(url)
-                salary = driver.find_element(By.CSS_SELECTOR, 'div[data-qa^="vacancy-salary"]').text
-                description = driver.find_element(By.CSS_SELECTOR, 'div[data-qa="vacancy-description"]').text
+
+                try:
+                    salary = driver.find_element(By.CSS_SELECTOR, 'div[data-qa^="vacancy-salary"]').text
+                    description = driver.find_element(By.CSS_SELECTOR,
+                                                      'div[data-qa="vacancy-description"]').text
+                except Exception:
+                    errors.append({f'description and salary is EMPTY'})
 
                 driver.switch_to.window(driver.window_handles[0])
 

@@ -18,8 +18,8 @@ from service.settings import (
     EMAIL_HOST,
     EMAIL_HOST_PASSWORD
 )
-ADMIN_USER = EMAIL_HOST_USER
 
+ADMIN_USER = EMAIL_HOST_USER
 
 today = datetime.date.today()
 subject = f"Рассылка вакансий за {today}"
@@ -72,7 +72,7 @@ if qs.exists():
     error = qs.first()
     data = error.data.get('errors', [])
     for i in data:
-        _html += f'<p"><a href="{ i["url"] }">Error: { i["title"] }</a></p><br>'
+        _html += f'<p"><a href="{i["url"]}">Error: {i["title"]}</a></p><br>'
     subject += f"Ошибка скрипта {today}"
     text_content += "Ошибки скрейпера"
     data = error.data.get('user_data')

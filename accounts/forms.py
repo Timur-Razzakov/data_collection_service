@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 
 from scraping.models import City, Speciality
+
 # from service.scraping.models import City, Speciality
 
 User = get_user_model()
@@ -13,6 +14,7 @@ class UserLoginForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     """ Проверка на валидацию"""
+
     def clean(self, *args, **kwargs):
         email = self.cleaned_data.get('email').strip()
         password = self.cleaned_data.get('password').strip()
@@ -34,14 +36,32 @@ class UserLoginForm(forms.Form):
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(label='Введите email',
                              widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    city = forms.ModelChoiceField(
+        queryset=City.objects.all(),
+        to_field_name="slug",
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label='Город'
+    )
+    speciality = forms.ModelChoiceField(
+        queryset=Speciality.objects.all(),
+        to_field_name="slug",
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label='Специальность'
+    )
+
     password = forms.CharField(label='Введите пароль',
                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(label='Введите пароль ещё раз',
                                 widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
+    send_email = forms.BooleanField(required=False, widget=forms.CheckboxInput,
+                                    label='Получать рассылку?')
+
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('email', 'city', 'speciality', 'password', 'password2', 'send_email')
 
     def clean_password2(self):
         data = self.cleaned_data

@@ -10,7 +10,7 @@ sys.path.append(proj)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "service.settings")
 django.setup()
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from scraping.models import Vacancies
 from datetime import datetime, timedelta
 
