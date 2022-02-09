@@ -11,7 +11,7 @@ django.setup()
 # -------------------------------------------------------------------------------
 
 from django.core.mail import EmailMultiAlternatives
-from scraping.models import Vacancies
+from scraping.models import Vacancies, Error
 from icecream import ic
 from service.settings import (
     EMAIL_HOST_USER,
@@ -19,10 +19,12 @@ from service.settings import (
     EMAIL_HOST_PASSWORD
 )
 
+ADMIN_USER = EMAIL_HOST_USER
+
 today = datetime.date.today()
 subject = f"Рассылка вакансий за {today}"
 text_content = f"Рассылка вакансий {today}"
-ADMIN_USER = EMAIL_HOST_USER
+from_email = EMAIL_HOST_USER
 empty = '<h2> Нет результат по вашему запросу </h2>'
 
 User = get_user_model()
@@ -40,7 +42,7 @@ if user_dct:
     for pair in user_dct.keys():
         params['city_id__in'].append(pair[0])
         params['speciality_id__in'].append(pair[1])
-    qs = Vacancies.objects.filter(**params).values()[:10]
+    qs = Vacancies.objects.filter(**params, created_at=today).values()[:15]
     vacancy = {}
     for item in qs:
         vacancy.setdefault((item['city_id'], item['speciality_id']), [])
@@ -56,7 +58,32 @@ if user_dct:
         for email in emails:
             to = email
             msg = EmailMultiAlternatives(
-                subject, text_content, ADMIN_USER, [to]
+                subject, text_content, from_email, [to]
             )
             msg.attach_alternative(_html, "text/html")
             msg.send()
+
+qs = Error.objects.filter(created_at=today)
+subject = ''
+text_content = ''
+to = ADMIN_USER
+_html = ''
+if qs.exists():
+    error = qs.first()
+    data = error.data.get('errors', [])
+    for i in data:
+        _html += f'<p"><a href="{i["url"]}">Error: {i["title"]}</a></p><br>'
+    subject += f"Ошибка скрипта {today}"
+    text_content += "Ошибки скрейпера"
+    data = error.data.get('user_data')
+    if data:
+        _html += '<hr>'
+        _html += '<h2>Пожелания пользователей </h2>'
+        for i in data:
+            _html += f'<p">Город: {i["city"]}, Специальность:{i["speciality"]},  Имейл:{i["email"]}</p><br>'
+        subject += f" Пожелания пользователей {today}"
+        text_content += "Пожелания пользователей"
+if subject:
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(_html, "text/html")
+    msg.send()

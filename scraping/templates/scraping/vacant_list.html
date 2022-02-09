@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Job Finder {% endblock %}
+{% block title %} TR {% endblock %}
 
 {% block content %}
 
@@ -18,7 +18,7 @@
         <p><strong>{{ obj.company_name }}</strong></p>
         <p><strong>{{ obj.salary }}</strong></p>
         {% autoescape off %}
-        <p class="col-md-12">{{ obj.description |truncatewords:19|safe}}</p>
+        <p class="col-md-12">{{ obj.description |truncatewords:25|safe}}</p>
         {% endautoescape %}
         <p>{{obj.city }} | {{obj.speciality }}
             <small>{{obj.created_at|date:"d-m-Y" }}</small></p>
