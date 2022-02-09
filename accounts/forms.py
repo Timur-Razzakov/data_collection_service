@@ -31,17 +31,36 @@ class UserLoginForm(forms.Form):
         return super(UserLoginForm, self).clean(*args, **kwargs)
 
 
+
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(label='Введите email',
                              widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    city = forms.ModelChoiceField(
+        queryset=City.objects.all(),
+        to_field_name="slug",
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label='Город'
+    )
+    speciality = forms.ModelChoiceField(
+        queryset=Speciality.objects.all(),
+        to_field_name="slug",
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label='Специальность'
+    )
+
     password = forms.CharField(label='Введите пароль',
                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(label='Введите пароль ещё раз',
                                 widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
+    send_email = forms.BooleanField(required=False, widget=forms.CheckboxInput,
+                                    label='Получать рассылку?')
+
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('email', 'city', 'speciality', 'password', 'password2', 'send_email')
 
     def clean_password2(self):
         data = self.cleaned_data
