@@ -1,6 +1,7 @@
 import datetime
 import os
 import sys
+
 import django
 from django.contrib.auth import get_user_model
 
@@ -12,11 +13,8 @@ django.setup()
 
 from django.core.mail import EmailMultiAlternatives
 from scraping.models import Vacancies, Error
-from icecream import ic
 from service.settings import (
-    EMAIL_HOST_USER,
-    EMAIL_HOST,
-    EMAIL_HOST_PASSWORD
+    EMAIL_HOST_USER
 )
 
 ADMIN_USER = EMAIL_HOST_USER

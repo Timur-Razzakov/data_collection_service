@@ -21,8 +21,5 @@ RUN pip install -r requirements.txt
 # Copy all stuff
 COPY . /app
 
-
-
-
 ## Run python  manage.py
 #CMD python manage.py runserver
