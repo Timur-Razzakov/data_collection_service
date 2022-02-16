@@ -9,8 +9,6 @@
 - PostgreSQL
 - Docker
 - asyncio
-- PyTest
-- 
 ---
 
 ### Установка
