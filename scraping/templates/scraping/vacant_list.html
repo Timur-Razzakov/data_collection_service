@@ -12,17 +12,23 @@
 <!--{% autoescape on %}-->
 <!--{{ obj.description}}-->
 <!--{% endautoescape %}-->
-<div class="card my-3">
-    <h5 class="card-header"><a href="{{ obj.url }}">{{ obj.title}}</a></h5>
-    <div class="card-body">
-        <p><strong>{{ obj.company_name }}</strong></p>
-        <p><strong>{{ obj.salary }}</strong></p>
-        {% autoescape off %}
-        <p class="col-md-12">{{ obj.description |truncatewords:19|safe}}</p>
-        {% endautoescape %}
-        <p>{{obj.city }} | {{obj.speciality }}
-            <small>{{obj.created_at|date:"d-m-Y" }}</small></p>
+<div class="row ">
+    <div class="col-md-8 mx-auto">
+        <div class="card my-3">
+
+            <h5 class="card-header"><a href="{{ obj.url }}">{{ obj.title}}</a></h5>
+            <div class="card-body">
+                <p><strong>{{ obj.company_name }}</strong></p>
+                <p><strong>{{ obj.salary }}</strong></p>
+                {% autoescape off %}
+                <p class="col-md-12">{{ obj.description |truncatewords:19|safe}}</p>
+                {% endautoescape %}
+                <p>{{obj.city }} | {{obj.speciality }}
+                    <small>{{obj.created_at|date:"d-m-Y" }}</small></p>
+            </div>
+        </div>
     </div>
+
 </div>
 {% endfor %}
 
@@ -40,7 +46,8 @@
                 {% endif %}
                 {% for page in object_list.paginator.page_range %}
                 <li class="page-item {% if page == object_list.number %} active {% endif %}">
-                    <a class="page-link" href="?city={{city}}&speciality={{ speciality }}&page={{page}}">{{page}}</a>
+                    <a class="page-link"
+                       href="?city={{city}}&speciality={{ speciality }}&page={{page}}">{{page}}</a>
                 </li>
                 {% endfor %}
                 {% if object_list.has_next %}
