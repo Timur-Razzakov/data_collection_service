@@ -4,4 +4,4 @@
 /__pycache__/
 *.pyc
 ../configurations
-../templates_tag.txt
+templates_tag.txt

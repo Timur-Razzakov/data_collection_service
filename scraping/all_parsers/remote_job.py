@@ -1,5 +1,5 @@
 import json
-import sys
+import datetime
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -14,12 +14,12 @@ def main_scraping_part(
         city: str,
         speciality: str):
     _options = Options()
-    # _options.add_argument("--window-size=1920,1080")
-    # _options.add_argument("--proxy-bypass-list=*")
-    # _options.add_argument('--headless')
+    _options.add_argument("--window-size=1920,1080")
+    _options.add_argument("--proxy-bypass-list=*")
+    _options.add_argument('--headless')
 
     driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=_options)
-
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
     errors = []
     all_href = set()
     results = []
@@ -112,7 +112,8 @@ def main_scraping_part(
             'company_name': company_name,
             'salary': salary,
             'city': city,
-            'speciality': speciality
+            'speciality': speciality,
+            'created_at': today
         })
 
     """
@@ -132,13 +133,14 @@ def main_scraping_part(
         progress_bar.click()
     except Exception:
         pass
-
-    with open("results.json", "w", encoding="utf=8") as file:
-        json.dump(results, file, indent=4, ensure_ascii=False)
+    #
+    # with open("results.json", "w", encoding="utf=8") as file:
+    #     json.dump(results, file, indent=4, ensure_ascii=False)
     # with open("errors.json", "w", encoding="utf=8") as file:
     #     json.dump(errors, file, indent=4, ensure_ascii=False)
 
     return results, errors
+
 
 #
 # '''
@@ -154,5 +156,5 @@ def main_scraping_part(
 #     print(f'Time taken => {time.time() - start_t}')
 #
 #
-# if __name__ == '__main__':
-#     main_scraping_part(1, 'Москва', 'Python')
+if __name__ == '__main__':
+    main_scraping_part(1, 'Москва', 'Python')

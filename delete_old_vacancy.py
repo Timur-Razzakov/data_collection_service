@@ -2,17 +2,20 @@ import os
 import sys
 import django
 
-#  you have to set the correct path to you settings module
-from icecream import ic
-
 proj = os.path.dirname(os.path.abspath('manage.py'))
 sys.path.append(proj)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "service.settings")
+
 django.setup()
+# ---------------------------------------------------------------------------------
+
+import time
+from datetime import datetime, timedelta
 
 from django.core.management.base import BaseCommand
+from schedule import every, repeat, run_pending
+
 from scraping.models import Vacancies
-from datetime import datetime, timedelta
 
 """
 Функция для удаления старых записей
@@ -22,15 +25,12 @@ from datetime import datetime, timedelta
 class Command(BaseCommand):
     help = 'Delete objects older than 5 days'
 
-    def handle(self, *args, **options):
-        vacancy = Vacancies.objects.filter(created_at__lte=datetime.now() - timedelta(days=5))
-        vacancy.delete()
-        self.stdout.write('Deleted objects older than 5 days')
+    @repeat(every().sunday.at("15:25"))
+    def handle(*args, **options):
+        Vacancies.objects.filter(created_at__lte=datetime.now() - timedelta(days=5)).delete()
+        # Vacancies.objects.filter(created_at__gte=datetime.now() - timedelta(days=5)).delete()
 
-# n = Vacancies.objects.filter(created_at__lte=datetime.now() - timedelta(days=5))
-# n.delete()
-# for tem in n:
-#     i+=1
-#     ic(i,tem.created_at,tem.title)
-#
-# ic(datetime.now() - timedelta(days=5))
+
+while 1:
+    run_pending()
+    time.sleep(1)

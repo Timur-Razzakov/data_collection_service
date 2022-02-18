@@ -1,3 +1,4 @@
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.urls import reverse
 
@@ -5,25 +6,18 @@ from scraping.models import City, Speciality
 
 
 class RegForm(models.Model):
-    name_and_surname = models.CharField(max_length=256, verbose_name='Имя и фамилия')
-    user_name = models.CharField(max_length=256, verbose_name='Никнейм')
     slug = models.SlugField(max_length=255, verbose_name='адрес', unique=True, null=True, blank=True)
     email_address = models.EmailField(max_length=256, verbose_name='почта')
-    phone_number = models.CharField(max_length=120, verbose_name='номер телефона')
-    country_name = models.ForeignKey(City, on_delete=models.SET_NULL, blank=True, null=True)
     name_of_speciality = models.ForeignKey(Speciality, on_delete=models.SET_NULL, blank=True, null=True)
     password = models.CharField(max_length=256, verbose_name='password')
     repeat_password = models.CharField(max_length=256, verbose_name='repeat-password')
 
     def __str__(self):
-        return self.user_name
+        return self.email_address
 
     def get_absolute_url(self):
         return reverse('RegForm', kwargs={'slug': self.slug})
 
-
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.db import models
 
 
 class MyUserManager(BaseUserManager):
@@ -64,9 +58,9 @@ class MyUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     city = models.ForeignKey('scraping.City', on_delete=models.SET_NULL,
-                             null=True, blank=True)
+                             null=True)
     speciality = models.ForeignKey('scraping.Speciality', on_delete=models.SET_NULL,
-                                   null=True, blank=True)
+                                   null=True)
     send_email = models.BooleanField(default=True)
 
     objects = MyUserManager()

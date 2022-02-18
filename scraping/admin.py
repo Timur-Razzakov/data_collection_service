@@ -19,8 +19,7 @@ class VacanciesAdmin(admin.ModelAdmin):
         'title', 'company_name',
         'salary', 'city', 'speciality', 'created_at', 'url',)  # исл для показа каких либо данных в админке
 
-    readonly_fields = ('created_at',)
-    list_display_links = ('url', 'title','company_name')
+    list_display_links = ('url', 'title', 'company_name')
     save_as = False  # добавляет кнопку "сохранить как новый объект" в админке
     search_fields = ('id', 'title', 'city')  # поиск по айди и по наименованию
 

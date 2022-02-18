@@ -1,6 +1,4 @@
-import json
-import sys
-import time
+import datetime
 
 from pyppeteer.errors import PageError
 from selenium import webdriver
@@ -15,15 +13,16 @@ def get_data(
         page_count: int,
         city: str,
         speciality: str):
+    global description
     _options = Options()
-    # _options.add_argument("--window-size=1920,1080")
-    # _options.add_argument("--proxy-bypass-list=*")
-    # _options.add_argument('--headless')
-    driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=_options)
-    st = time.time()
+    _options.add_argument("--window-size=1920,1080")
+    _options.add_argument("--proxy-bypass-list=*")
+    _options.add_argument('--headless')
+    driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=_options)
     driver.get('https://hh.uz')
     results = []
     errors = []
+    today =datetime.datetime.now().strftime("%Y-%m-%d")
     '''
         Самодельная универсальная функция для ожидания
     '''
@@ -77,7 +76,8 @@ def get_data(
         try:
             for vacancy in vacancies:
                 title = vacancy.find_element(By.CSS_SELECTOR, 'a[data-qa="vacancy-serp__vacancy-title"]')
-                company_name = vacancy.find_element(By.CSS_SELECTOR, 'a[data-qa="vacancy-serp__vacancy-employer"]')
+                company_name = vacancy.find_element(By.CSS_SELECTOR,
+                                                    'a[data-qa="vacancy-serp__vacancy-employer"]')
                 city = vacancy.find_element(By.CSS_SELECTOR, 'div[data-qa="vacancy-serp__vacancy-address"]')
                 url = title.get_attribute('href')
 
@@ -102,6 +102,7 @@ def get_data(
                     "salary": salary,
                     "city": city.text,
                     'speciality': speciality,
+                    'created_at': today,
                 }
                 results.append(data)
 
@@ -115,8 +116,8 @@ def get_data(
             continue
 
     #
-    with open("results_hh.json", "w", encoding="utf=8") as file:
-        json.dump(results, file, indent=4, ensure_ascii=False)
+    # with open("results_hh.json", "w", encoding="utf=8") as file:
+    #     json.dump(results, file, indent=4, ensure_ascii=False)
 
     return results, errors
 

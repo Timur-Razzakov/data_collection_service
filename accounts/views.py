@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from accounts.forms import UserLoginForm, UserRegistrationForm, ContactForm, UserUpdateForm
-from icecream import ic
 from scraping.models import Error
 
 User = get_user_model()
@@ -91,22 +90,21 @@ def delete_view(request):
     return redirect('home')
 
 
+"""Функция для отправки новых вакансий, которых нет в списке"""
+
+
 def contact_view(request):
     if request.method == 'POST':
         contact_form = ContactForm(request.POST or None)
         if contact_form.is_valid():
             data = contact_form.cleaned_data
-            ic(type(data))
             city = data.get('city')
             speciality = data.get('speciality')
             email = data.get('email')
             qs = Error.objects.filter(created_at=dt.date.today())
             if qs.exists():
                 err = qs.first()
-                ic(err)
-                ic(type(err))
                 data = err.data.get('user_data', [])
-                ic(type(data))
                 data.append({'city': city, 'email': email, 'speciality': speciality})
                 err.data['user_data'] = data
                 err.save()
