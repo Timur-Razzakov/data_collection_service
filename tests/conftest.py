@@ -5,12 +5,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 @pytest.fixture
-def create_user():
-    return {
-        'email': 'razzakov3@gmail.com',
+def create_user(request):
+    request.cls.user_data = {
+        'email': 'razzakov3.com',
         'password': '123',
-        'specialty': 'Python',
-        'city': 'Москва', }
+        'specialty': 'python',
+        'city': 'moskva',
+    }
 
 
 # fixture for Chrome

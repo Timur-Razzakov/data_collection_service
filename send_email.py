@@ -66,17 +66,17 @@ def job():
                 msg.send()
 
 
-# # schedule.every().tuesday.at("10:25").do(job)
-# schedule.every().day.at('15:33').do(job)
-#
-# # показывает сколько осталось времени до запуска скрипта
-# while 1:
-#     n = schedule.idle_seconds()
-#     print(n)
-#     if n is None:
-#         # no more jobs
-#         break
-#     elif n > 0:
-#         # sleep exactly the right amount of time
-#         time.sleep(n)
-#     schedule.run_pending()
+# schedule.every().tuesday.at("10:25").do(job)
+schedule.every().day.at('15:33').do(job)
+
+# показывает сколько осталось времени до запуска скрипта
+while 1:
+    n = schedule.idle_seconds()
+    print(n)
+    if n is None:
+        # no more jobs
+        break
+    elif n > 0:
+        # sleep exactly the right amount of time
+        time.sleep(n)
+    schedule.run_pending()
