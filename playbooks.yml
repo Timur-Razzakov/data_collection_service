@@ -1,0 +1,11 @@
+---
+- name: Run app as a service
+  hosts: server
+  become: yes
+  gather_facts: false
+
+  tasks:
+
+  - name: start project
+    service: python manage.py runserver
+

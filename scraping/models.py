@@ -15,8 +15,8 @@ class City(models.Model):
 
 class Speciality(models.Model):
     name_of_specialty = models.CharField(unique=True,
-                                         max_length=255,
-                                         verbose_name='Наименование специальности')
+                                        max_length=255,
+                                        verbose_name='Наименование специальности')
     slug = models.SlugField(unique=True, blank=True, max_length=60)
 
     def __str__(self):
@@ -29,11 +29,11 @@ class Vacancies(models.Model):
     description = models.TextField(verbose_name='Описание вакансии')
     company_name = models.CharField(max_length=255, verbose_name='Наименовании компании')
     salary = models.CharField(max_length=255, blank=True, verbose_name='Заработная плата', default=None)
-    city = models.ForeignKey(City, verbose_name='Город', on_delete=models.CASCADE,blank=True )
+    city = models.ForeignKey(City, verbose_name='Город', on_delete=models.CASCADE, blank=True)
     speciality = models.ForeignKey(Speciality,
-                                   verbose_name='Специальность',
-                                   on_delete=models.CASCADE,
-                                   blank=True)
+                                verbose_name='Специальность',
+                                on_delete=models.CASCADE,
+                                blank=True)
     created_at = models.DateField(verbose_name='Дата публикации')
 
     class Meta:

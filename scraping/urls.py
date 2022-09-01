@@ -9,3 +9,9 @@ urlpatterns = [
     path('vacant_list/', list_view, name='vacant_list'),
 
 ]
+
+
+
+
+
+

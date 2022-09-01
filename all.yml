@@ -1,0 +1,7 @@
+ansible_connection: network_cli
+ansible_network_os: ios
+ansible_user: red18
+ansible_password: Zi65xIsyce9SPRrZ
+ansible_become: no
+ansible_become_method: disable
+ansible_become_pass: pass

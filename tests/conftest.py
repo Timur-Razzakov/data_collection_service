@@ -26,3 +26,4 @@ def chrome_driver_init(request):
 
     yield
     driver.close()
+

@@ -27,12 +27,14 @@ def get_data(
         Самодельная универсальная функция для ожидания
     '''
 
+
     def Wait(time, what_by, second_param):
         return WebDriverWait(driver, time).until(
             ES.presence_of_element_located((what_by, second_param))
         )
 
-    """   
+
+    """
         Поиск нужного поля
     """
     try:
@@ -44,6 +46,8 @@ def get_data(
         # {f'{DARK_PURPLE}Could not
         # locate {ENDE}{INBOX}{LIGHT_BLUE}"xpath=//input[@placeholder="Профессия, должность или компания"]'})
         errors.append({f'Could not locate "//input[@placeholder="Профессия, должность или компания"]'})
+
+
 
     '''
        заполнение ДАННЫМИ! и отправка
@@ -65,7 +69,7 @@ def get_data(
         # получаем все вакансии
         try:
             vacancies = WebDriverWait(driver, 10) \
-                .until(ES.presence_of_all_elements_located((By.CSS_SELECTOR, "div.vacancy-serp-item")))
+                .until(ES.presence_of_all_elements_located((By.XPATH, '//*[@id="a11y-main-content"]')))
         except Exception:
             data = {
                 "errors": 'vacancies is EMPTY',
@@ -124,3 +128,7 @@ def get_data(
 #
 # if __name__ == '__main__':
 #     get_data(1, 'Сочи', 'Python')
+
+
+
+

@@ -4,8 +4,8 @@ services:
   app:
     build: .
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8800"
-#    volumes:
-#      - .:/app
+    volumes:
+      - .:/app
     ports:
       - 8800:8800
     depends_on:

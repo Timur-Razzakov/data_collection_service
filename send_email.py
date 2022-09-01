@@ -18,16 +18,16 @@ from service.settings import (
     EMAIL_HOST_USER
 )
 
+today = datetime.date.today()
+subject = f"Рассылка вакансий за {today}"
+text_content = f"Рассылка вакансий {today}"
+empty = '<h2> Нет результата по вашему запросу </h2>'
+
+ADMIN_USER = EMAIL_HOST_USER
+User = get_user_model()
+
 
 def job():
-    today = datetime.date.today()
-    subject = f"Рассылка вакансий за {today}"
-    text_content = f"Рассылка вакансий {today}"
-    empty = '<h2> Нет результата по вашему запросу </h2>'
-
-    ADMIN_USER = EMAIL_HOST_USER
-    User = get_user_model()
-
     qs = User.objects.filter(send_email=True).values('city', 'speciality', 'email')
     user_dct = {}
     for item in qs:
@@ -66,8 +66,8 @@ def job():
                 msg.send()
 
 
-# schedule.every().tuesday.at("10:25").do(job)
-schedule.every().day.at('15:33').do(job)
+schedule.every().tuesday.at("10:25").do(job)
+# schedule.every().day.at('15:33').do(job)
 
 # показывает сколько осталось времени до запуска скрипта
 while 1:
