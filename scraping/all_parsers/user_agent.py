@@ -18,4 +18,5 @@ def random_agent():
 
 from user_agent import random_agent
 # user_agent
-header = str(random_agent())
+headers = str(random_agent())
+print(headers)

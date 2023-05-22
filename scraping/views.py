@@ -16,7 +16,6 @@ def home_view(request):
  Сортируем city and speciality и  подключаем пагинацию
 """
 
-
 def list_view(request):
     # print(request.GET)
     form = Find_job()
@@ -29,9 +28,8 @@ def list_view(request):
             _filter['city__slug'] = city
         if speciality:
             _filter['speciality__slug'] = speciality
-
         qs = Vacancies.objects.filter(**_filter).select_related('city', 'speciality')
-        paginator = Paginator(qs, 5)  # показывает 10 листов
+        paginator = Paginator(qs, 1)  # показывает 10 листов
 
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
-
+import re
 from scraping.models import City, Speciality
 # from service.scraping.models import City, Speciality
 

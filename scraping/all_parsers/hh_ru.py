@@ -1,5 +1,7 @@
 import datetime
+import json
 
+from icecream import ic
 from pyppeteer.errors import PageError
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -17,22 +19,20 @@ def get_data(
     _options = Options()
     _options.add_argument("--window-size=1920,1080")
     _options.add_argument("--proxy-bypass-list=*")
-    _options.add_argument('--headless')
+    # _options.add_argument('--headless')
     driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=_options)
     driver.get('https://hh.uz')
     results = []
     errors = []
-    today =datetime.datetime.now().strftime("%Y-%m-%d")
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
     '''
         Самодельная универсальная функция для ожидания
     '''
-
 
     def Wait(time, what_by, second_param):
         return WebDriverWait(driver, time).until(
             ES.presence_of_element_located((what_by, second_param))
         )
-
 
     """
         Поиск нужного поля
@@ -47,8 +47,6 @@ def get_data(
         # locate {ENDE}{INBOX}{LIGHT_BLUE}"xpath=//input[@placeholder="Профессия, должность или компания"]'})
         errors.append({f'Could not locate "//input[@placeholder="Профессия, должность или компания"]'})
 
-
-
     '''
        заполнение ДАННЫМИ! и отправка
     '''
@@ -60,7 +58,7 @@ def get_data(
         Проверяем не пустая ли страница
     """
     try:
-        vacancies = Wait(10, By.CSS_SELECTOR, f'.bloko-column_m-9.bloko-column_l-13')
+        vacancies = Wait(10, By.XPATH, f'//*[@id="a11y-main-content"]')
     except Exception:
         errors.append({f'vacancies is EMPTY'})
 
@@ -69,7 +67,9 @@ def get_data(
         # получаем все вакансии
         try:
             vacancies = WebDriverWait(driver, 10) \
-                .until(ES.presence_of_all_elements_located((By.XPATH, '//*[@id="a11y-main-content"]')))
+                .until(ES.presence_of_all_elements_located(
+                (By.CSS_SELECTOR,
+                 'div.serp-item')))
         except Exception:
             data = {
                 "errors": 'vacancies is EMPTY',
@@ -79,9 +79,9 @@ def get_data(
             errors.append(data)
         try:
             for vacancy in vacancies:
-                title = vacancy.find_element(By.CSS_SELECTOR, 'a[data-qa="vacancy-serp__vacancy-title"]')
+                title = vacancy.find_element(By.CSS_SELECTOR, 'a.serp-item__title')
                 company_name = vacancy.find_element(By.CSS_SELECTOR,
-                                                    'a[data-qa="vacancy-serp__vacancy-employer"]')
+                                                    'a.bloko-link_kind-tertiary')
                 city = vacancy.find_element(By.CSS_SELECTOR, 'div[data-qa="vacancy-serp__vacancy-address"]')
                 url = title.get_attribute('href')
 
@@ -128,7 +128,3 @@ def get_data(
 #
 # if __name__ == '__main__':
 #     get_data(1, 'Сочи', 'Python')
-
-
-
-
