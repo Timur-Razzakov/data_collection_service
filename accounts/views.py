@@ -2,6 +2,8 @@ import datetime as dt
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
+from icecream import ic
+
 from accounts.forms import UserLoginForm, UserRegistrationForm, ContactForm, UserUpdateForm
 from scraping.models import Error
 
@@ -55,9 +57,9 @@ def register_view(request):
 
 
 def update_view(request):
-    contact_form = ContactForm()
     if request.user.is_authenticated:
         user = request.user
+        ic(request.method)
         if request.method == 'POST':
             form = UserUpdateForm(request.POST)
             if form.is_valid():
@@ -72,7 +74,7 @@ def update_view(request):
             initial={'city': user.city, 'speciality': user.speciality,
                     'send_email': user.send_email})
         return render(request, 'accounts/update.html',
-                    {'form': form, 'contact_form': contact_form})
+                    {'form': form})
     else:
         return redirect('login')
 
@@ -90,30 +92,31 @@ def delete_view(request):
     return redirect('home')
 
 
+
 """Функция для отправки новых вакансий, которых нет в списке"""
 
-
-def contact_view(request):
-    if request.method == 'POST':
-        contact_form = ContactForm(request.POST or None)
-        if contact_form.is_valid():
-            data = contact_form.cleaned_data
-            city = data.get('city')
-            speciality = data.get('speciality')
-            email = data.get('email')
-            qs = Error.objects.filter(created_at=dt.date.today())
-            if qs.exists():
-                err = qs.first()
-                data = err.data.get('user_data', [])
-                data.append({'city': city, 'email': email, 'speciality': speciality})
-                err.data['user_data'] = data
-                err.save()
-            else:
-                data = [{'city': city, 'email': email, 'speciality': speciality}]
-                Error(data=f"user_data:{data}").save()
-            messages.success(request, 'Данные отправлены администрации.')
-            return redirect('update')
-        else:
-            return redirect('update')
-    else:
-        return redirect('login')
+#
+# def contact_view(request):
+#     if request.method == 'POST':
+#         contact_form = ContactForm(request.POST or None)
+#         if contact_form.is_valid():
+#             data = contact_form.cleaned_data
+#             city = data.get('city')
+#             speciality = data.get('speciality')
+#             email = data.get('email')
+#             qs = Error.objects.filter(created_at=dt.date.today())
+#             if qs.exists():
+#                 err = qs.first()
+#                 data = err.data.get('user_data', [])
+#                 data.append({'city': city, 'email': email, 'speciality': speciality})
+#                 err.data['user_data'] = data
+#                 err.save()
+#             else:
+#                 data = [{'city': city, 'email': email, 'speciality': speciality}]
+#                 Error(data=f"user_data:{data}").save()
+#             messages.success(request, 'Данные отправлены администрации.')
+#             return redirect('update')
+#         else:
+#             return redirect('update')
+#     else:
+#         return redirect('login')

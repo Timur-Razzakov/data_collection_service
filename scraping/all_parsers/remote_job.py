@@ -133,7 +133,7 @@ def main_scraping_part(
         progress_bar.click()
     except Exception:
         pass
-    #
+    # #
     # with open("results.json", "w", encoding="utf=8") as file:
     #     json.dump(results, file, indent=4, ensure_ascii=False)
     # with open("errors.json", "w", encoding="utf=8") as file:
@@ -155,6 +155,7 @@ def main_scraping_part(
 #     main_scraping_part( city, speciality)
 #     print(f'Time taken => {time.time() - start_t}')
 #
+# #
+# if __name__ == '__main__':
+#     main_scraping_part(1, 'Москва', 'Python')
 #
-if __name__ == '__main__':
-    main_scraping_part(1, 'Москва', 'Python')

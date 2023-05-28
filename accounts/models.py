@@ -77,7 +77,7 @@ class MyUser(AbstractBaseUser):
         return True
 
     def has_module_perms(self, app_label):
-        """есть  ли у пользователя разрешение на доступ к моделям в данном приложении. """
+        """Есть  ли у пользователя разрешение на доступ к моделям в данном приложении. """
         # Simplest possible answer: Yes, always
         return True
 
@@ -86,3 +86,5 @@ class MyUser(AbstractBaseUser):
         """ Является ли пользователь администратором """
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+

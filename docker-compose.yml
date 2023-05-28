@@ -1,6 +1,7 @@
 version: '3.1'
 
 services:
+<<<<<<< HEAD
   app:
     build: .
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
@@ -8,6 +9,17 @@ services:
       - .:/app
     ports:
       - 80:8000
+=======
+  checking:
+    build: ./
+    volumes:
+      - static_volume:/home/www/staticfiles
+    env_file:
+      - .env
+    expose:
+      - 8000
+    restart: always
+>>>>>>> 9c8018ec3861ad5844d5bb2da562b67dff4c510f
     depends_on:
       - db
   db:
@@ -17,6 +29,16 @@ services:
     restart: always
     env_file:
       - .env
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/www/staticfiles
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    depends_on:
+      - checking
 
 volumes:
   postgresDb:
+  static_volume:

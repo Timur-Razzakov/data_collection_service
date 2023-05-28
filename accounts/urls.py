@@ -7,6 +7,6 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('update/', update_view, name='update'),
     path('delete/', delete_view, name='delete_user'),
-    path('contact/', contact_view, name='contact'),
+    # path('contact/', contact_view, name='contact'),
 
 ]
