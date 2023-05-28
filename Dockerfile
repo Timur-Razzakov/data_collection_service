@@ -1,21 +1,25 @@
 FROM python:3.8
-# устанавливаем рабочую директорию
-WORKDIR /home/www
-# устанавливаем переменную окружения для проекта
+RUN apt-get update && apt-get upgrade -y && apt-get autoremove && apt-get autoclean
+
+# create work dir
+RUN mkdir /app
+# Define work dir
+WORKDIR /app
+
+# set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get upgrade -y && apt-get autoremove && apt-get autoclean && apt-get install -y vim
-
-
+# Copy reqs
+COPY ./requirements.txt .
+# Install reqs
 RUN pip install --upgrade pip
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
 
-# Копирование файлов проекта в образ
 
-COPY ./requirements.txt /home/www/requirements.txt
-# устанавливаем зависимости
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy all stuff
+COPY . /app
 
-COPY . /home/www
-RUN chmod +x /home/www/entrypoint.sh && chmod -R 755 /home/www
-ENTRYPOINT ["/home/www/entrypoint.sh"]
+## Run python  manage.py
+#CMD python manage.py runserver

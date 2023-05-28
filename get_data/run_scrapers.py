@@ -26,7 +26,7 @@ User = get_user_model()
 
 """ Все скреперы """
 # main_scraping_part
-scrapers = (get_data,)
+scrapers = (get_data,main_scraping_part)
 
 
 # Получение city_id, speciality_id у пользователей, которых стоит галочка на получение писем по почте
@@ -95,7 +95,7 @@ for vacancy in results:
     if errors:
         err = Error(data=errors).save()
 
-schedule.every().wednesday.at("11:56").do(run_scripts)
+schedule.every().monday.at("10:20").do(run_scripts)
 
 while 1:
     time.sleep(1)
