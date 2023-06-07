@@ -1,10 +1,8 @@
-import asyncio
 import logging
-import os
 
 from celery import shared_task
-from django.core.exceptions import ObjectDoesNotExist
-from accounts.models import MyUser
+from get_data.delete_old_vacancy import Command
+
 logger = logging.getLogger(__name__)
 
 @shared_task

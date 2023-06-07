@@ -35,7 +35,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # for heroku
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',  # for heroku
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,9 +81,9 @@ DATABASES = {
         'PORT': os.environ.get('POSTGRES_PORT')
     }
 }
-# исп для обновления значения, для работы на heroku
-db = dj_database_url.config()
-DATABASES['default'].update(db)
+# # исп для обновления значения, для работы на heroku
+# db = dj_database_url.config()
+# DATABASES['default'].update(db)
 
 AUTH_USER_MODEL = 'accounts.MyUser'
 
@@ -214,11 +214,9 @@ CKEDITOR_CONFIGS = {
     }
 }
 # Redis related settings
-REDIS_HOST = '127.0.0.1'
-RADIS_PORT = '6379'
-CELERY_BROKER_URL = "redis://" + REDIS_HOST + ':' + RADIS_PORT + '/0'  # для подключения
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL') + '/0'  # для подключения
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND') + '/0'
 CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-CELERY_RESULT_BACKEND = "redis://" + REDIS_HOST + ':' + RADIS_PORT + '/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
