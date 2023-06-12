@@ -68,7 +68,6 @@ def main_scraping_part(
         errors.append({f'vacancies is EMPTY'})
     # получаем все вакансии
     try:
-
         all_jobs = driver.find_elements('xpath', '//*[@class="vacancy_item"]')
         for job in all_jobs:
             # получение WebElement-ты ссылок
@@ -105,7 +104,7 @@ def main_scraping_part(
             # f'{ENDE}{INBOX}{LIGHT_BLUE} Functions not found': None})
             errors.append({'url': url, 'title': "Div does not exists"})
 
-        results.append({
+        data = {
             'url': url,
             'title': title,
             'description': description,
@@ -114,7 +113,9 @@ def main_scraping_part(
             'city': city,
             'speciality': speciality,
             'created_at': today
-        })
+        }
+        results.append(data)
+        print('added from remote_job')
 
     """
     scroll
@@ -140,7 +141,6 @@ def main_scraping_part(
     #     json.dump(errors, file, indent=4, ensure_ascii=False)
 
     return results, errors
-
 
 #
 # '''

@@ -1,7 +1,7 @@
 import logging
 
 from celery import shared_task
-from get_data.delete_old_vacancy import Command
+from delete_old_vacancy import Command
 
 logger = logging.getLogger(__name__)
 

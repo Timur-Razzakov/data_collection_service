@@ -32,7 +32,7 @@ def list_view(request):
         if speciality:
             _filter['speciality__slug'] = speciality
         qs = Vacancies.objects.filter(**_filter).select_related('city', 'speciality')
-        paginator = Paginator(qs, 1)  # показывает 10 листов
+        paginator = Paginator(qs, 10)  # показывает 10 листов
 
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)

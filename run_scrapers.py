@@ -2,6 +2,7 @@
 скрипт для запуска скриптов вне проекта
 """
 import asyncio
+import json
 import os
 import sys
 import time
@@ -10,8 +11,9 @@ import django
 import schedule
 from django.contrib.auth import get_user_model
 from icecream import ic
+from selenium.webdriver.remote.webelement import WebElement
 
-proj = os.path.dirname(os.path.abspath('../manage.py'))
+proj = os.path.dirname(os.path.abspath('manage.py'))
 sys.path.append(proj)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "service.settings")
 django.setup()
@@ -27,6 +29,8 @@ User = get_user_model()
 """ Все скреперы """
 # main_scraping_part
 scrapers = (get_data,main_scraping_part)
+# scrapers = (main_scraping_part,)
+# scrapers = (get_data,)
 
 
 # Получение city_id, speciality_id у пользователей, которых стоит галочка на получение писем по почте
@@ -64,7 +68,7 @@ async def run_scripts(value):
 
 loop = asyncio.get_event_loop()
 # задания для асинхронного запуска
-tmp_tasks = [(func, 2, data['city'], data['speciality'])
+tmp_tasks = [(func, 1, data['city'], data['speciality'])
              for data in data_list
              for func in scrapers]
 #  создаём указанные задания и вызываем их
@@ -74,7 +78,6 @@ tasks = asyncio.wait([loop.create_task(run_scripts(task)) for task in tmp_tasks]
 loop.run_until_complete(tasks)
 # закрываем
 loop.close()
-
 for vacancy in results:
     """Удаляем city and speciality из скрипта и передаём их в формате инстанс"""
     city_txt = vacancy.pop("city")
@@ -92,9 +95,6 @@ for vacancy in results:
         job.save()
     except Exception as e:
         print(e)
-    if errors:
-        err = Error(data=errors).save()
-
 schedule.every().monday.at("10:20").do(run_scripts)
 
 while 1:

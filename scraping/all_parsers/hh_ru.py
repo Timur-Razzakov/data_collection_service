@@ -15,13 +15,12 @@ def get_data(
         page_count: int,
         city: str,
         speciality: str):
-    global description
     _options = Options()
     _options.add_argument("--window-size=1920,1080")
     _options.add_argument("--proxy-bypass-list=*")
-    # _options.add_argument('--headless')
+    _options.add_argument('--headless')
     driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=_options)
-    driver.get('https://hh.uz')
+
     results = []
     errors = []
     today = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -33,7 +32,7 @@ def get_data(
         return WebDriverWait(driver, time).until(
             ES.presence_of_element_located((what_by, second_param))
         )
-
+    driver.get('https://hh.uz')
     """
         Поиск нужного поля
     """
@@ -88,7 +87,6 @@ def get_data(
                 driver.execute_script("window.open('about:blank', 'tab2');")
                 driver.switch_to.window("tab2")
                 driver.get(url)
-
                 try:
                     salary = driver.find_element(By.CSS_SELECTOR, 'div[data-qa^="vacancy-salary"]').text
                     description = driver.find_element(By.CSS_SELECTOR,
@@ -109,6 +107,7 @@ def get_data(
                     'created_at': today,
                 }
                 results.append(data)
+                print('added')
 
             i += 1
         except (TimeoutError, PageError):
@@ -122,7 +121,7 @@ def get_data(
     #
     # with open("results_hh.json", "w", encoding="utf=8") as file:
     #     json.dump(results, file, indent=4, ensure_ascii=False)
-
+    print(results)
     return results, errors
 
 #
