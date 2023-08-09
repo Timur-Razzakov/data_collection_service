@@ -1,8 +1,5 @@
-from rest_framework import serializers
-
 from accounts.models import User, Referral
-
-from .utils import random_string_generator
+from rest_framework import serializers
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -25,6 +22,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def get_invite_code(self, obj):
         get_user_referer = Referral.objects.filter(user=obj).first()
+        if not get_user_referer:
+            return None
         return get_user_referer.referral.invite_code
 
 

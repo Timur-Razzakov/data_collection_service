@@ -1,20 +1,14 @@
-from django import forms
-from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.hashers import check_password
-
 from accounts.models import User
+from django import forms
 
 
-class UserLoginForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['phone_number']
-        widgets = {
-            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-        }
-        labels = {
-            'phone_number': 'Введите номер телефона:',
-        }
+class UserLoginForm(forms.Form):
+    phone_number = forms.CharField(
+        label='Введите номер телефона ',
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+        )
+    )
 
 
 class InviteCodeForm(forms.ModelForm):
@@ -28,6 +22,13 @@ class InviteCodeForm(forms.ModelForm):
             'phone_number': 'Введите код активации:',
         }
 
-#
-# # Номер телефона
-# # Введите код активации'
+
+class UserForm(forms.Form):
+    invite_code = forms.CharField(
+        max_length=6,
+        min_length=6,
+        label='Введите invite_code, который хотите активировать',
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+        )
+    )
