@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %} Домашняя страница {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col"><h2 class=" text-center my-3">Сервис по рассылки коммерческих предложений</h2>
+    </div>
+</div>
+{% if user.is_authenticated %}
+<div class="row ">
+    <div class="col-md-8 mx-auto my-2">
+        <div class="container px-4">
+            <p class="text-justify">
+                Наш уникальный сервис предоставляет возможность элегантно и оригинально поздравлять ваших
+                клиентов, а также эффективно распространять коммерческие предложения через популярную
+                платформу Telegram. Мы считаем, что важно придавать значимость каждому моменту общения с вашей
+                аудиторией, поэтому наша команда специалистов разработала уникальные и стильные шаблоны
+                поздравлений и привлекательные макеты коммерческих предложений.
+            </p>
+
+
+            <form method="GET" action="#">
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <div class="container-buttons">
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                    <a href="#" class="badge badge-info">Показать всех клиентов</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="row ">
+    <div class="col-md-5 mx-auto">
+        <div class="container px-5">
+            <p class="text-justify">
+                Для работы с сервисом войдите в свою учётную запись <br>или попросите у администратора "Логин"
+                и "Пароль"
+
+            </p>
+
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

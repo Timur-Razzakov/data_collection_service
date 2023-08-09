@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import InviteCode, UserProfile
+from .models import  Referral
 
-admin.site.register(InviteCode)
-admin.site.register(UserProfile)
+admin.site.register(Referral)
