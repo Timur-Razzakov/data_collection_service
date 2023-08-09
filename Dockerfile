@@ -21,5 +21,4 @@ COPY ./requirements.txt /home/app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /home/app
-RUN chmod +x /home/app/entrypoint.sh && chmod -R 755 /home/app
-ENTRYPOINT ["/home/app/entrypoint.sh"]
+

@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  api: # Сервис API
+  referral_systems:
     build:
       context: ./
     volumes:
@@ -13,16 +13,6 @@ services:
     restart: always
     depends_on:
       - db
-  front:
-    build:
-      context: ./
-    env_file:
-      - .env
-    expose:
-      - 9000
-    restart: always
-    depends_on:
-      - api
   nginx:
     build: ./nginx
     volumes:
@@ -31,7 +21,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - api
+      - referral_systems
     env_file:
       - .env
   db:
