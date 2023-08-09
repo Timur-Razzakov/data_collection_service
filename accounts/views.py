@@ -19,6 +19,7 @@ from .utils import random_string_generator, send_message
 
 class RegistrationView(APIView):
     """Получаем код активации и сохраняем в бд"""
+
     def post(self, request):
         phone_serializer = VerificationCodeSerializer(data=request.data)
         if phone_serializer.is_valid():
@@ -40,7 +41,6 @@ class RegistrationView(APIView):
 
 class VerifyCode(APIView):
     """Проверяем введенный код активации и связываем с профилем пользователя"""
-
     def post(self, request):
         verification_serializer = VerificationCodeSerializer(data=request.data)
         if verification_serializer.is_valid():
@@ -51,7 +51,8 @@ class VerifyCode(APIView):
                                                 activate_code=verification_code)
                 user_profile.is_active = True
                 user_profile.save()
-                return Response({"detail": "Verification successful."}, status=status.HTTP_200_OK)
+                return Response({"phone_number": phone_number, "activate_code": verification_code},
+                                status=status.HTTP_200_OK)
             except User.DoesNotExist:
                 return Response({"detail": "Invalid verification code."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(verification_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

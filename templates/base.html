@@ -21,21 +21,21 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">CheckIP </a>
+            <a class="navbar-brand" href="{% url 'frontend:home' %}">TR </a>
             <div class="collapse navbar-collapse d-flex flex-row-reverse" id="navbarNavDropdown">
                 <ul class="navbar-nav ">
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Выйти</a>
+                        <a class="nav-link" href="{% url 'frontend:logout' %}">Выйти</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
-                           href="#">{{user.email}}
+                           href="#">{{user.phone_number}}
                         </a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Войти</a>
+                        <a class="nav-link" href="{% url 'frontend:registration' %}">Войти</a>
                     </li>
                     {% endif %}
                 </ul>
