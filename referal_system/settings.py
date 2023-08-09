@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users',
     'accounts',
     'frontend',
+    'drf_yasg',
 
 ]
 
@@ -143,3 +144,5 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.IsAuthenticated',
     # )
 }
+
+CSRF_TRUSTED_ORIGINS = ['http://0.0.0.0:8080']

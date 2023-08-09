@@ -19,7 +19,7 @@ services:
       - static_volume:/home/app/staticfiles
       - ./nginx:/etc/nginx/conf.d
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - referral_systems
     env_file:
@@ -33,6 +33,5 @@ services:
       - data:/var/lib/postgresql/data
 volumes:
   data:
-  media:
   static_volume:
 
