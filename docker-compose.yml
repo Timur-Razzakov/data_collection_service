@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  referral_systems:
+  api: # Сервис API
     build:
       context: ./
     volumes:
@@ -13,6 +13,16 @@ services:
     restart: always
     depends_on:
       - db
+  front:
+    build:
+      context: ./
+    env_file:
+      - .env
+    expose:
+      - 9000
+    restart: always
+    depends_on:
+      - api
   nginx:
     build: ./nginx
     volumes:
@@ -21,7 +31,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - referral_systems
+      - api
     env_file:
       - .env
   db:
@@ -33,6 +43,5 @@ services:
       - data:/var/lib/postgresql/data
 volumes:
   data:
-  media:
   static_volume:
 
