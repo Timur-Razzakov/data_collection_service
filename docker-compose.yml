@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  referral_systems:
+    build:
+      context: ./
+    volumes:
+      - static_volume:/home/app/staticfiles
+    env_file:
+      - .env
+    expose:
+      - 8000
+    restart: always
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/app/staticfiles
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    depends_on:
+      - referral_systems
+    env_file:
+      - .env
+  db:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - data:/var/lib/postgresql/data
+volumes:
+  data:
+  media:
+  static_volume:
+
