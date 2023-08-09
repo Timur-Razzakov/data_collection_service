@@ -40,3 +40,4 @@ class ReferralSerializers(serializers.ModelSerializer):
         model = Referral
         fields = ('user', 'referral', 'invite_code')
         read_only_fields = ['user', 'referral']
+

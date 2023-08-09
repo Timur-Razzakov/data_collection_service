@@ -20,13 +20,17 @@ def logout_view(request):
 
 def home_view(request):
     form = UserForm(request.POST or None)
+    # Получение CSRF-токена из кук
+    csrf_token = request.COOKIES['csrftoken']
     # Определение заголовков запроса с CSRF-токеном
-
+    headers = {
+        'X-CSRFToken': csrf_token,
+    }
     if form.is_valid():
         data = form.cleaned_data
         response = requests.post(
             url=f"{api_url}referral/",
-            data=data, cookies=request.COOKIES)
+            data=data, cookies=request.COOKIES, headers=headers)
         json_response = response.json()
         detail = json_response.get('detail', '')
         messages.success(request, detail)

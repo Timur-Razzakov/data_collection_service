@@ -4,6 +4,7 @@ from django import forms
 
 class UserLoginForm(forms.Form):
     phone_number = forms.CharField(
+        max_length=11,
         label='Введите номер телефона ',
         widget=forms.TextInput(
             attrs={'class': 'form-control'}

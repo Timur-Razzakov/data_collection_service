@@ -26,26 +26,24 @@
                 <li class="nav-item dropdown">
                     {% if user.is_authenticated %}
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#"> О пользователе</a></li>
+                        <li><a class="dropdown-item" href="{% url 'about_user' %}"> О
+                            пользователе</a>
+                        </li>
+                    </ul>
                 </li>
-            </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">О пользователе</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'frontend:logout' %}">Выйти</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
-                   href="#">{{user.phone_number}}
-                </a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'frontend:registration' %}">Войти</a>
-            </li>
-            {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'frontend:logout' %}">Выйти</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
+                       href="#">{{user.phone_number}}
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'frontend:registration' %}">Войти</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
